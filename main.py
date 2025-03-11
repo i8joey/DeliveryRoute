@@ -1,3 +1,5 @@
+#ID - 011657817
+
 from operator import truediv
 from wsgiref.handlers import format_date_time
 
@@ -74,7 +76,6 @@ print("Total Distance: ", truck3.mileage)
 print()
 print("Total Distance: ", truck1.mileage + truck2.mileage + truck3.mileage, "Miles")
 print("Total Time: ", round((truck1.mileage + truck2.mileage + truck3.mileage)/18, 2), "Hours")
-print(list(snapshot.keys()))
 while True:
     print("p - Package Information Lookup")
     print("e - Exit")
