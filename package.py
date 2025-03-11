@@ -12,5 +12,6 @@ class Package:
         self.weight = weight
         self.status = status
         self.note = note
+        self.delivery_time = None
 
 
