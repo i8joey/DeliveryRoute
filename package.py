@@ -1,5 +1,7 @@
+from datetime import datetime
+
 class Package:
-    ALLOWED_STATUSES = ["hub", "routing", "delivered"]
+    ALLOWED_STATUSES = ["at hub", "routing", "delivered"]
 
     def __init__(self, address, city, state, zip, deadline, weight, status, note=None):
         if status not in self.ALLOWED_STATUSES:
@@ -12,6 +14,6 @@ class Package:
         self.weight = weight
         self.status = status
         self.note = note
-        self.delivery_time = None
+        self.delivery_time = datetime.strptime("8:00 AM", "%I:%M %p").time()
 
 

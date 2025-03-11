@@ -5,9 +5,10 @@ class Truck:
         self.packages = {}
         self.count = 0
         self.mileage = 0.00
+        self.departure_time = None
+        self.return_time = None
 
     def load_package(self, package_id, package):
-        package.status="routing"
         self.packages[package_id] = package
         self.count += 1
 

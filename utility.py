@@ -1,7 +1,6 @@
 import csv
 from datetime import datetime, timedelta
 from package import Package
-from truck import Truck
 
 #creating packages, reading notes and then setting status
 #csv file has 40 packages total
@@ -9,7 +8,7 @@ def load_packages(truck1, truck2, truck3, extra_packages, together, all_packages
     with open('packages.csv', mode='r', newline='') as file:
         reader = csv.DictReader(file)
         for row in reader:
-            status = "hub"
+            status = "at hub"
             time_str = row['deadline']
             # creates time object for deadline
             try:
@@ -29,21 +28,16 @@ def load_packages(truck1, truck2, truck3, extra_packages, together, all_packages
                 for i in package_list:
                     together.add(int(i))
                 truck1.load_package(id, package)
-                package.status = "routing"
             elif "Delayed on flight" in package.note:
                 truck2.load_package(id, package)
-                package.status = "routing"
             elif "Can only be on truck 2" in package.note:
                 truck2.load_package(id, package)
-                package.status = "routing"
             elif "Wrong address" in package.note:
                 truck3.load_package(id, package)
-                package.status = "routing"
             elif package.deadline <= datetime.strptime("10:30 AM", "%I:%M %p").time():
                 truck1.load_package(id, package)
-                package.status = "routing"
             else:
-                package.status = "hub"
+                package.status = "at hub"
                 extra_packages[id] = package
             all_packages[id] = package
 
@@ -52,7 +46,6 @@ def load_extras(truck1, truck2, truck3, extra_packages):
         while truck.count < 16 and extra_packages:
             id, package = extra_packages.popitem()
             truck.load_package(id, package)
-            package.status = "routing"
 
 def add_clean_data(locations):
     with open('distance.csv', mode='r', newline='') as file:
@@ -68,21 +61,17 @@ def add_clean_data(locations):
             if locations[row][col] == '':
                 locations[row][col] = locations[col][row]
 
-def deliver_packages(truck1, truck2, truck3, locations, all_packages, start_time, starting, closest):
-    for truck in [truck1, truck2, truck3]:
-        while truck.count > 0:
-            shortest = 999.00
-            # comparing distances and selecting the shortest distance
-            for i in truck.packages:
-                location = truck.packages[i].address + " " + truck.packages[i].zip
-                column = locations[0].index(location)
-                row = locations[0].index(starting)
-                if float(locations[row][column]) < float(shortest):
-                    shortest = locations[row][column]
-                    closest = i
-            starting = truck.packages[closest].address + " " + truck.packages[closest].zip
-            truck.unload_pacakge(closest)
-            start_time += timedelta(hours=float(shortest) / float(18))
-            all_packages[closest].status = "delivered"
-            all_packages[closest].delivery_time = start_time.time()
-            truck.mileage += float(shortest)
+def deliver_package(truck, starting, locations, all_packages):
+    closest = Package
+    shortest = 999.00
+    for i in truck.packages:
+        location = truck.packages[i].address + " " + truck.packages[i].zip
+        column = locations[0].index(location)
+        row = locations[0].index(starting)
+        if float(locations[row][column]) < float(shortest):
+            shortest = locations[row][column]
+            closest = i
+    truck.unload_pacakge(closest)
+    all_packages[closest].status = "delivered"
+    truck.mileage += float(shortest)
+    return closest, shortest, all_packages[closest].address + " " + all_packages[closest].zip
