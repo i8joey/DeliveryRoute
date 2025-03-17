@@ -21,6 +21,7 @@ def load_packages(truck1, truck2, truck3, extra_packages, together, all_packages
             # packages that must be delivered together are put in the same truck
             if id in together:
                 truck1.load_package(id, package)
+                package.truck = 1
                 continue
             # sorts packages into trucks depending on the note
             if "Must be delivered with" in row['note']:
@@ -28,24 +29,32 @@ def load_packages(truck1, truck2, truck3, extra_packages, together, all_packages
                 for i in package_list:
                     together.add(int(i))
                 truck1.load_package(id, package)
+                package.truck = 1
             elif "Delayed on flight" in package.note:
                 truck2.load_package(id, package)
+                package.truck = 2
             elif "Can only be on truck 2" in package.note:
                 truck2.load_package(id, package)
+                package.truck = 2
             elif "Wrong address" in package.note:
                 truck3.load_package(id, package)
+                package.truck = 3
             elif package.deadline <= datetime.strptime("10:30 AM", "%I:%M %p").time():
                 truck1.load_package(id, package)
+                package.truck = 1
             else:
                 package.status = "at hub"
                 extra_packages[id] = package
             all_packages[id] = package
 
 def load_extras(truck1, truck2, truck3, extra_packages):
+    count = 0
     for truck in [truck1, truck2, truck3]:
+        count += 1
         while truck.count < 16 and extra_packages:
             id, package = extra_packages.popitem()
             truck.load_package(id, package)
+            package.truck = count
 
 def add_clean_data(locations):
     with open('distance.csv', mode='r', newline='') as file:

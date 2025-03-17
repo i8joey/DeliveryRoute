@@ -15,5 +15,6 @@ class Package:
         self.status = status
         self.note = note
         self.delivery_time = datetime.strptime("8:00 AM", "%I:%M %p").time()
+        self.truck = None
 
 

@@ -87,6 +87,6 @@ while True:
         time1 = datetime.strptime(input(), "%I:%M %p").time()
         closest_time = min(list(snapshot.keys()), key=lambda t: abs(datetime.combine(datetime.min, t) - datetime.combine(datetime.min, time1)))
         for i in snapshot[closest_time]:
-            print("Package:", i , snapshot[closest_time][i].status, "at", snapshot[closest_time][i].delivery_time)
+            print("Package ID:", i , snapshot[closest_time][i].status, "at", snapshot[closest_time][i].delivery_time, ", Delivery Address:", snapshot[closest_time][i].address, ", Deadline:", snapshot[closest_time][i].deadline, ", On Truck:", snapshot[closest_time][i].truck)
     else:
         print("Please enter a valid input.")
