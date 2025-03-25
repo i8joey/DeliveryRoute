@@ -15,7 +15,7 @@ extra_packages = {} #extra packages that can be delivered at any time before end
 
 snapshot = {} #snapshot of all deliveries whenever a package is delivered (for UI)
 
-start_time = datetime.combine(datetime.today(), datetime.strptime("8:00 AM", "%I:%M %p").time())
+start_time = datetime.combine(datetime.today(), datetime.strptime("9:05 AM", "%I:%M %p").time())
 locations = []
 
 #each truck has a limit of 16 packages, and we are limited to 3 trucks

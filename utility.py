@@ -31,8 +31,8 @@ def load_packages(truck1, truck2, truck3, extra_packages, together, all_packages
                 truck1.load_package(id, package)
                 package.truck = 1
             elif "Delayed on flight" in package.note:
-                truck2.load_package(id, package)
-                package.truck = 2
+                truck1.load_package(id, package)
+                package.truck = 1
             elif "Can only be on truck 2" in package.note:
                 truck2.load_package(id, package)
                 package.truck = 2
